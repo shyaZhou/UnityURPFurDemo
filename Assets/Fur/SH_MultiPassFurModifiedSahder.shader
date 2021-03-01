@@ -119,7 +119,7 @@
 			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
 			#pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
             #pragma shader_feature _NORMALMAP_URP_ON _NORMALMAP_URP_OFF
-            #define SHADER_TARGET 100
+            // #define SHADER_TARGET 100
             
             #pragma vertex vert_LayerBase
             #pragma fragment frag_LayerBase
@@ -152,7 +152,6 @@
 			#pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
 			#pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
             #pragma shader_feature _NORMALMAP_URP_ON _NORMALMAP_URP_OFF
-            #define SHADER_TARGET 100
             
             #pragma vertex vert_LayerBase
             #pragma fragment frag_LayerBase

@@ -48,12 +48,12 @@ Varyings vert (Attributes IN, half FUR_OFFSET =0)
     //长毛
     // half3 direction = lerp(IN.normal, _Gravity * _GravityStrength + IN.normal, _FUR_OFFSET);
     IN.positionOS.xyz += direction * _FurLength * _FUR_OFFSET;
-    OUT.posWS = TransformObjectToWorld(IN.positionOS);
+    OUT.posWS = TransformObjectToWorld(IN.positionOS.xyz);
     float3 positionWS = TransformObjectToWorld( IN.positionOS.xyz );
 	float4 positionCS = TransformWorldToHClip( positionWS );
     OUT.screenPos = ComputeScreenPos(positionCS);
     
-    OUT.positionHCS = TransformObjectToHClip(IN.positionOS);
+    OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
     OUT.uv.xy = TRANSFORM_TEX(IN.uv, _MainTex);
     OUT.viewWS = normalize( _WorldSpaceCameraPos - OUT.posWS);
     VertexNormalInputs normalInput = GetVertexNormalInputs( IN.normal, IN.tangent );
@@ -188,7 +188,7 @@ half4 frag (Varyings IN, half FUR_OFFSET = 0) : SV_Target
 
     //UNITY_APPLY_FOG(i.fogCoord, c.rgb);
     // half alpha = tex2D(_LayerTex, TRANSFORM_TEX(IN.uv.xy, _LayerTex)).r;
-    float2 uvoffset = tex2D(_FlowMap, IN.uv).rg*2-1;
+    float2 uvoffset = tex2D(_FlowMap, IN.uv.xy).rg*2-1;
     // return tex2D(_FlowMap, IN.uv);
     half alpha = tex2D(_LayerTex, TRANSFORM_TEX(IN.uv.xy, _LayerTex) + _UVOffset * uvoffset * _FUR_OFFSET).r;
     alpha = step(lerp(0, _CutoffEnd, _FUR_OFFSET), alpha);
@@ -196,7 +196,7 @@ half4 frag (Varyings IN, half FUR_OFFSET = 0) : SV_Target
     c.a += dot(-s.eyeVec, s.normalWorld) - _EdgeFade;
     c.a = max(0, c.a);
     c.a *= alpha;
-	c = half4(c.rgb * lerp(lerp(_ShadowColor, 1, _FUR_OFFSET), 1, _ShadowLerp), c.a);
+	c = half4(c.rgb * lerp(lerp(_ShadowColor.rgb, 1, _FUR_OFFSET), 1, _ShadowLerp), c.a);
     // float3 mainAtten = mainLight.color * mainLight.distanceAttenuation;
     // mainAtten = lerp( mainAtten, mainAtten * mainLight.shadowAttenuation, shadow );
 
